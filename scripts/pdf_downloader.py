@@ -18,6 +18,6 @@ def download_pdf_from_drive(drive_link, output_path):
         print(f"Error downloading PDF: {e}")
 
 if __name__ == "__main__":
-    drive_link = "https://drive.google.com/file/d/1LQYFaXJ9sFTYi4pW4pis5Ln-xzp0jRLq/view?usp=sharing"
+    drive_link = ""
     os.makedirs("input", exist_ok=True)
     download_pdf_from_drive(drive_link, "input/blood_report.pdf")

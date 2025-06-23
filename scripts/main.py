@@ -8,15 +8,16 @@ from dotenv import load_dotenv
 from uagents_adapter import CrewaiRegisterTool
 from pdf_downloader import download_pdf_from_drive
 from pdf_to_text import pdf_to_text
-from trip_agents import BloodReportAgents
-from trip_tasks import BloodReportTasks
+
+from agents import BloodReportAgents  
+from tasks import BloodReportTasks    
 
 load_dotenv()
 
 class BloodReportCrew:
     def __init__(self, drive_link, text_file):
         self.drive_link = drive_link
-        self.text_file = text_file or "input/blood_report.txt"  # Default text_file
+        self.text_file = text_file or "input/blood_report.txt"  
 
     def run(self):
         # Validate inputs
@@ -77,11 +78,9 @@ class BloodReportCrew:
 
         # Prepare final response
         response = f"""
-==============================
-    Blood Report Analysis Agent
-Powered by Fetch.ai Innovation Lab
-==============================
-# Blood Report Analysis Completed
+
+Blood Report Analysis Agent Powered by Fetch.ai Innovation Lab
+
 
 ## Summary
 {summary_md}
@@ -122,16 +121,15 @@ def main():
         print("Error: Missing required API keys in environment")
         return
 
-    os.environ["OPENAI_API_KEY"] = ""
-    os.environ["SERPER_API_KEY"] = ""
+    os.environ["OPENAI_API_KEY"] = openai_api_key
+    os.environ["SERPER_API_KEY"] = serper_api_key
 
-    # Default values
+
     crew = BloodReportCrew(
-        drive_link="https://drive.google.com/file/d/1LQYFaXJ9sFTYi4pW4pis5Ln-xzp0jRLq/view?usp=sharing",
+        drive_link="",
         text_file="input/blood_report.txt"
     )
 
-    # Register with Agentverse
     register_tool = CrewaiRegisterTool()
     query_params = {
         "drive_link": {"type": "str", "required": True},
@@ -141,13 +139,13 @@ def main():
     result = register_tool.run(
         tool_input={
             "crew_obj": crew,
-            "name": "Blood Report Analysis Crew AI Agent",
+            "name": "Blood Report Analysis Crew AI",
             "port": 8026,
             "description": "A CrewAI agent for analyzing blood reports and providing detailed health recommendations, powered by Innovation Lab",
             "api_token": api_key,
             "mailbox": True,
             "query_params": query_params,
-            "example_query": "Analyze a blood report from https://drive.google.com/file/d/1LQYFaXJ9sFTYi4pW4pis5Ln-xzp0jRLq/view?usp=sharing"
+            # "example_query": "Analyze a blood report from https://drive.google.com/file/d/1LQYFaXJ9sFTYi4pW4pis5Ln-xzp0jRLq/view?usp=sharing"
         }
     )
 
